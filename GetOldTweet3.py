@@ -5,7 +5,6 @@ import json
 
 # fetch old tweets based on criterion
 def get_oldTweets(query, geo_code, since_time, until_time):
-    print(query, geo_code, since_time, until_time)
     search_criteria = oldTweet.manager.TweetCriteria().setQuerySearch(query).setNear(geo_code).setWithin(
         '50km').setSince(since_time).setUntil(until_time)
     tweets = oldTweet.manager.TweetManager.getTweets(search_criteria)
@@ -14,7 +13,7 @@ def get_oldTweets(query, geo_code, since_time, until_time):
 
 def set_database(name):
     try:
-        host = 'http://admin:1111@127.0.0.1:5984'
+        host = 'http://admin:luo511437824@127.0.0.1:5984'
         couch = couchdb.Server(host)
     except Exception as e:
         print('error', e)
@@ -40,14 +39,13 @@ def to_database(tweets, city, admin, country):
     for each in tweets:
         tweet_dict = {'id': each.id, 'date': str(each.date), 'geo': each.geo, 'hashtags': each.hashtags, 'text': each.text,
                       'retweets': each.retweets, 'city': city, 'admin': admin, 'country': country}
-        name = '%s_tweets' % admin.lower()
+        name = '%s_tweets' % ''.join(admin.lower().split())
         save_tweet(name, tweet_dict)
 
 
 def main():
     with open('au.json', 'r') as json_file:
         geo_code = json.load(json_file)
-        geo_code = geo_code[2:3]
     since_time, until_time = '2019-09-01', '2020-04-30'
     queries = ['aupol', 'scomo', 'Scott Morrison']
 

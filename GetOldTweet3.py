@@ -1,7 +1,13 @@
+import os
+
 import GetOldTweets3 as oldTweet
 import couchdb
 import json
 
+db_user = os.environ['DATABASE_USER']
+db_password = os.environ['DATABASE_PASSWORD']
+db_host = os.environ['DATABASE_HOST']
+db_port = os.environ['DATABASE_PORT']
 
 # fetch old tweets based on criterion
 def get_oldTweets(query, geo_code, since_time, until_time):
@@ -13,7 +19,7 @@ def get_oldTweets(query, geo_code, since_time, until_time):
 
 def set_database(name):
     try:
-        host = 'http://admin:luo511437824@127.0.0.1:5984'
+        host = f'http://{db_user}:{db_password}@{db_host}:{db_port}'
         couch = couchdb.Server(host)
     except Exception as e:
         print('error', e)
